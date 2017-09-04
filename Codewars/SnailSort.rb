@@ -9,10 +9,11 @@ def snail(array)
       coords[[row_i, col_i]] = el
     end
   end
-
+  p coords
   next_coord = [0, 0]
 
   until result.length == height * width
+    p next_coord
     result << coords[next_coord]
     coords.delete(next_coord)
     next_coord = generate_next_coord(next_coord, coords)
@@ -23,11 +24,13 @@ end
 
 def generate_next_coord(coord, coords)
   deltas = [[0, 1], [-1, 0], [0, -1], [1, 0]]
+  next_coord = nil
   deltas.each do |delta|
-    next_coord = [ [delta[0] + coord[0]], [delta[1] + coord[1]] ]
-    return next_coord if is_valid?(next_coord, coords)
+    new_coord = [ delta[0] + coord[0], delta[1] + coord[1] ]
+    next unless next_coord.nil?
+    next_coord = new_coord if is_valid?(new_coord, coords)
   end
-  nil
+ next_coord
 end
 
 def is_valid?(coord, coords)
