@@ -1,32 +1,47 @@
 def snail(array)
-  coords = {}
   result = []
-  height = array.length
-  width = array.first.length
+  coords = generate_coords(array)
 
-  array.each_with_index do | row, row_i |
-    row.each_with_index do | el, col_i |
-      coords[[row_i, col_i]] = el
+  current_coord = [0, 0]
+  current_dir = :right
+  deltas = { right: [0, 1], down: [1, 0], left: [0, -1], up: [-1, 0] }
+
+
+  until coords.empty?
+    result << coords[current_coord]
+    coords.delete(current_coord)
+
+    next_coord = map_coord(current_coord, deltas[current_dir])
+    if is_valid?(next_coord, coords)
+      current_coord = next_coord
+    else
+      current_dir = change_dir(current_dir)
+      current_coord = map_coord(current_coord, deltas[current_dir])
     end
+
   end
-
-  next_coord = [0, 0]
-  current_dir = :left
-  dirs = [:left, :down, :right, :up]
-  deltas = { left: [0, 1], down: [1, 0], right: [0, -1], up: [-1, 0] }
-
-
-  until result.length == height * width
-    result << coords[next_coord]
-    coords.delete(next_coord)
-   until is_valid?(next_coord, coords)
-     next_coord = map_coord(next_coord, deltas[current_dir])
-     current_dir = change_dir(current_dir, dirs) unless is_valid?(next_coord, coords)
-   end
-  end
-
-  result.flatten
+  result
 end
+
+
+def change_dir(current_dir)
+  dirs = [:right, :down, :left, :up]
+  index_shift = dirs.index(current_dir) + 1
+  index = index_shift % dirs.length
+  dirs[index]
+end
+
+
+
+
+
+
+
+
+
+
+
+
 
 def map_coord(coord, delta)
   [ delta[0] + coord[0], delta[1] + coord[1] ]
@@ -36,14 +51,17 @@ def is_valid?(coord, coords)
   !!coords[coord]
 end
 
-def change_dir(current_dir, dirs)
-  index_shift = dirs.index(current_dir) + 1
-  index = index_shift % dirs.length
-  dirs[index]
+def generate_coords(array)
+  coords = {}
+
+  array.each_with_index do | row, row_i |
+    row.each_with_index do | el, col_i |
+      coords[[row_i, col_i]] = el
+    end
+  end
+
+  coords
 end
-
-
-
 # def snail(array)
 #   coords = {}
 #   result = []
@@ -82,3 +100,12 @@ end
 # def is_valid?(coord, coords)
 #   !!coords[coord]
 # end
+
+
+array = [[1, 2, 3, 4, 5],
+         [6, 7, 8, 9, 10],
+         [11, 12, 13, 14, 15],
+         [16, 17, 18, 19, 20]]
+
+result = [1, 2, 3, 4, 5, 10, 15, 20, 19, 18, 17, 16, 11, 6, 7, 8, 9, 14, 13, 12]
+p snail(array) == result
