@@ -4,16 +4,13 @@ def largest_product_of_3(array)
   # pick out 1) the largest element,
   #          2) the second two largest elements
   #          3) the smallest 2 elements
-  largest_el, largest_2, smallest_2 = arr[-1], arr[-3..-2], arr[0...2]
+  largest, largest_2, smallest_2 = arr[-1], arr[-3..-2], arr[0...2]
 
   # the largest product of 3 will be the largest element multiplied
   # by the maximum of either:
   # A) the product of 2nd and 3rd largest elements or
   # B) the product of the two most negative elements
-  p "largest_el: #{largest_el}"
-  p "largest_2: #{largest_2}"
-  p "smallest_2: #{smallest_2}"
-  largest_el * [largest_2.reduce(:*), smallest_2.reduce(:*)].max
+  [ largest * largest_2.reduce(:*), largest * smallest_2.reduce(:*)].max
 end
 
 
