@@ -18,6 +18,7 @@ def max_profit(prices)
 
     max_difference = current_max - current_min if min_index < max_index
   end
+
   max_difference
 end
 
