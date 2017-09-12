@@ -1,31 +1,48 @@
+def merge_ranges(arr)
+  sorted = arr.sort
+  merged = [sorted.shift]
 
-def merge_ranges(range_arr)
-  sorted = range_arr.sort
-  result = []
+  sorted.each do |new_meeting|
+    new_start, new_end = new_meeting
+    last_meeting = merged.last
 
-  start_i = 0
-  merged = sorted[start_i]
-
-  sorted.each_index do |i|
-    next if i == start_i
-
-    if sorted[i][0].between?( *merged )
-      merged = merge(sorted[i], merged)
+    if new_start.between?(*last_meeting)
+      merged[-1][1] = new_end
     else
-      result << merged
-      merged, start_i = sorted[i], i
+      merged.push(new_meeting)
     end
   end
 
-  result << merged unless start_i == sorted.length - 1
-
-  result
+  merged
 end
 
 
-def merge(range1, range2)
-  [[range1[0], range2[0]].min, [range1[1], range2[1]].max]
-end
+# # # ______ CODE GRAVEYARD ______ # # #
+#
+# def merge_ranges(range_arr)
+#   sorted = range_arr.sort
+#   result = []
+#
+#   start_i = 0
+#   merged = sorted[start_i]
+#
+#   sorted.each_index do |i|
+#     next if i == start_i
+#
+#     if sorted[i][0].between?( *merged )
+#       merged = merge(sorted[i], merged)
+#     else
+#       result << merged
+#       merged, start_i = sorted[i], i
+#     end
+#   end
+#
+#   result << merged unless start_i == sorted.length - 1
+#
+#   result
+# end
+#
+
 
 
 # # test cases # #
@@ -84,3 +101,34 @@ p  result1 == expect1
 # p " result = #{result7}"
 # p "expected: #{expect7}"
 # p  result7 == expect7
+
+
+
+
+
+
+# # # ______ CODE GRAVEYARD ______ # # #
+#
+# def merge_ranges(range_arr)
+#   sorted = range_arr.sort
+#   result = []
+#
+#   start_i = 0
+#   merged = sorted[start_i]
+#
+#   sorted.each_index do |i|
+#     next if i == start_i
+#
+#     if sorted[i][0].between?( *merged )
+#       merged = merge(sorted[i], merged)
+#     else
+#       result << merged
+#       merged, start_i = sorted[i], i
+#     end
+#   end
+#
+#   result << merged unless start_i == sorted.length - 1
+#
+#   result
+# end
+#
