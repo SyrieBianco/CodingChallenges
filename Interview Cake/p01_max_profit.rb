@@ -48,18 +48,29 @@ result3 = max_profit(day_3)
 result4 = max_profit(day_4)
 result5 = max_profit(day_5)
 
+expect1 = (10 - 2)
+expect2 = (7 - 2)
+expect3 = (10 - 2)
+expect4 = (8 - 8)
+expect5 = (-1)
+
 p ' ~~ test 1 ~~ '
-p "result = #{result1}"
-p  result1 == (10 - 2)
+p " result = #{result1}"
+p "expected: #{expect1}"
+p  result1 == expect1
 p ' ~~ test 2 ~~ '
-p "result = #{result2}"
-p  result2 == (7 - 2)
+p " result = #{result2}"
+p "expected: #{expect2}"
+p  result2 == expect2
 p ' ~~ test 3 ~~ '
-p "result = #{result3}"
-p  result3 == (10 - 2)
+p " result = #{result3}"
+p "expected: #{expect3}"
+p  result3 == expect3
 p ' ~~ test 4 ~~ '
-p "result = #{result4}"
-p  result4 == (8 - 8)
+p " result = #{result4}"
+p "expected: #{expect4}"
+p  result4 == expect4
 p ' ~~ test 5 ~~ '
-p "result = #{result5}"
-p  result5 == (-1)
+p " result = #{result5}"
+p "expected: #{expect5}"
+p  result5 == expect5
