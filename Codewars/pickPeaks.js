@@ -14,15 +14,12 @@ function pickPeaks(arr){
       if ( curr === next) {
         // we are in a plateau
         // update the plateau object
-        plateau.pos = i;
-        plateau.peak = curr;
-        plateau.true = true;
+        updatePlateau(plateau, i, curr);
       // if it current element is *also* greater than the next element...
       } else if (curr > next) {
         // we are at a relative peak
         // update the tracker object
-        tracker.pos.push(i);
-        tracker.peaks.push(curr);
+        updateTracker(tracker, i, curr);
       }
     }
 
@@ -33,8 +30,7 @@ function pickPeaks(arr){
 
       // and that it represented a relative peak
       // => update the tracker object
-      tracker.pos.push(plateau.pos);
-      tracker.peaks.push(plateau.peak);
+      updateTracker(tracker, plateau.pos, plateau.peak);
     }
   }
 
@@ -49,5 +45,5 @@ function updatePlateau(plateau, i, curr){
 
 function updateTracker(tracker, pos, peak){
   tracker.pos.push(pos);
-  tracker.peak.push(peak);
+  tracker.peaks.push(peak);
 }
