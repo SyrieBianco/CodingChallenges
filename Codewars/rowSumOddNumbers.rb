@@ -1,7 +1,6 @@
 def row_sum_odd_numbers(i)
-  elements_before = (0...i).reduce(:+)
-  start_num = (elements_before * 2 - 1) + 2
-  (start_num * i) + (0...i).reduce(:+) * 2
+  range = (0...i).reduce(:+)
+  (range * 2) * (i + 1) + i
 end
 
 puts "Test 1"
