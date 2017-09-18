@@ -10,7 +10,10 @@
 # base_converter(31, 16) == "1f"
 
 def base_converter(num, b)
+  return num.to_s if num < b
+  digits = ('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
 
+  digits[num % b] + base_converter(num / b)
 end
 
 
@@ -358,7 +361,7 @@ class Array
   def my_each_with_index(&prc)
 
   end
-  
+
 end
 
 
@@ -542,7 +545,7 @@ class Array
   def my_zip(*arrs)
 
   end
-  
+
 end
 
 
@@ -599,7 +602,7 @@ class Array
   def my_quick_sort(&prc)
 
   end
-  
+
 end
 
 
@@ -768,8 +771,3 @@ end
 # Do not capitalize words like 'a', 'and', 'of', 'over' or 'the'
 def titleize(title)
 end
-
-
-
-
-
