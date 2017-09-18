@@ -2,6 +2,8 @@
 # Problem 1: Base Converter
 #______________________________________________________________________
 
+# # # specs # # #
+# ~ * ~  spec.rb:8 spec.rb:4  ~ * ~ #
 
 # Write a recursive method that takes in a base 10 number n and
 # converts it to a base b number. Return the new number as a string
@@ -10,10 +12,10 @@
 # base_converter(31, 16) == "1f"
 
 def base_converter(num, b)
-  return num.to_s if num < b
-  digits = ('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
-
-  digits[num % b] + base_converter(num / b)
+#   return num.to_s if num < b
+#   digits = ('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
+#
+#   digits[num % b] + base_converter(num / b, b)
 end
 
 
@@ -24,13 +26,31 @@ end
 # Problem 2: Binary Search
 #______________________________________________________________________
 
+# # # specs # # #
+# ~ * ~  spec.rb:15  spec.rb:19  spec.rb:23  spec.rb:27  spec.rb:31   ~ * ~ #
 
 class Array
 
   # Write a monkey patch of binary search:
   # E.g. [1, 2, 3, 4, 5, 7].my_bsearch(5) => 4
   def my_bsearch(target, &prc)
+    return nil if length < 1
+    prc ||= Proc.new{ |a, b| a <=> b }
 
+    mid_i = length / 2
+    mid = self[mid_i]
+    left, right = take(mid_i), drop(mid_i + 1)
+
+    case prc.call(target, mid)
+    when 0
+      return mid_i
+    when -1
+      result = left.my_bsearch(target, &prc)
+      result ? result : nil
+    when 1
+      result = right.my_bsearch(target, &prc)
+      result ? result + mid_i + 1 : nil
+    end
   end
 
 end
