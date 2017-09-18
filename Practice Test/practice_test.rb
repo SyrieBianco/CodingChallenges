@@ -138,7 +138,8 @@ end
 # one step of the process.
 
 def digital_root(num)
-
+  return num if num < 10
+  digital_root(num % 10 + num / 10)
 end
 
 
@@ -152,8 +153,15 @@ end
 # # # specs # # #
 # ~ * ~ be rspec spec.rb:95 ~ * ~ #
 
+class Fixnum
+  def double
+    self * 2
+  end
+end
+
 # Write a method that doubles each element in an array
 def doubler(array)
+  array.map(&:double)
 end
 
 
@@ -175,6 +183,15 @@ class Array
   # [1, 3, 4, 3, 0, 3, 0].dups => { 3 => [1, 3, 5], 0 => [4, 6] }
 
   def dups
+    counter = Hash.new { |h, k| h[k] = [] }
+    dup = {}
+
+    each_with_index do |el, i|
+      counter[el] << i
+      dup[el] = counter[el] if counter[el].length == 2
+    end
+
+    dup
   end
 end
 
@@ -203,6 +220,7 @@ end
 #
 # My solution used 3 method parameters: current_row, taken_columns, and
 # positions so far
+
 def eight_queens_possibilities(current_row, taken_columns, positions)
 
 end
@@ -217,14 +235,18 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:142 spec.rb:146 spec.rb:150
+
 
 
 # ~ * ~ #
 # return b^n recursively. Your solution should accept negative values
 # for n
-def exponent(b, n)
 
+def exponent(b, n)
+  return 1 if n == 0
+  return b if n == 1
+  n > 0 ? b * exponent(b, n - 1) : 1.0 / (b * exponent(b, n.abs - 1))
 end
 
 
@@ -237,8 +259,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
-
+# ~ * ~ be rspec spec.rb:157 spec.rb:161 spec.rb:165 spec.rb:170
 
 # ~ * ~ #
 # Write a recursive method that returns the first "num" factorial numbers.
@@ -246,6 +267,9 @@ end
 # is 1!, the 3rd factorial is 2!, etc.
 
 def factorials_rec(num)
+  return [1, 1].take(num) if num < 2
+
+  factorials_rec(num - 1) << factorials_rec(num - 1).last * (num - 1)
 end
 
 
@@ -258,8 +282,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
-
+# ~ * ~ be rspec spec.rb:179 spec.rb:183
 
 # ~ * ~ #
 # Write a method that returns the factors of a number in ascending order.
@@ -278,19 +301,35 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:190 spec.rb:194 spec.rb:198
+
+
 
 
 # ~ * ~ #
 # Implement a method that finds the sum of the first n
 # fibonacci numbers recursively. Assume n > 0
 def fibs_sum(n)
-
+  fibonacci(n).reduce(:+)
 end
 
+# def fibonacci(n)
+#   return [0, 1].take(num) if num <= 2
+#
+#   factorial = factorials_rec(num - 1)
+#   factorial << factorial[-2..-1].reduce(:+)
+# end
+#
 
+def fibonacci(n)
+  return [1, 1].take(n) if n <= 2
 
+  fibonacci(n - 1) << fib(n)
+end
 
+def fib(n)
+  ((1 + Math.sqrt(5)) ** n - (1 - Math.sqrt(5)) ** n) / (2 ** n * Math.sqrt(5))
+end
 
 #______________________________________________________________________
 # Problem 13: First Even Numbers Sum
@@ -298,7 +337,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:206 spec.rb:210
 
 
 # ~ * ~ #
@@ -317,7 +356,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:217 spec.rb:221 spec.rb:230
 
 
 # ~ * ~ #
@@ -343,7 +382,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:237 spec.rb:241 spec.rb:245
 
 
 # ~ * ~ #
@@ -372,8 +411,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
-
+# ~ * ~ be rspec spec.rb:258 spec.rb:262 spec.rb:266
 
 # ~ * ~ #
 # Write a method that returns the median of elements in an array
@@ -393,7 +431,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:274 spec.rb:278 spec.rb:282 spec.rb:286 spec.rb:300
 
 
 # ~ * ~ #
