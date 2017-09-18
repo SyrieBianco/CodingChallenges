@@ -3,7 +3,7 @@
 #______________________________________________________________________
 
 # # # specs # # #
-# ~ * ~  spec.rb:8 spec.rb:4  ~ * ~ #
+# ~ * ~ be rspec spec.rb:8 spec.rb:4  ~ * ~ #
 
 # Write a recursive method that takes in a base 10 number n and
 # converts it to a base b number. Return the new number as a string
@@ -12,10 +12,10 @@
 # base_converter(31, 16) == "1f"
 
 def base_converter(num, b)
-#   return num.to_s if num < b
-#   digits = ('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
-#
-#   digits[num % b] + base_converter(num / b, b)
+  return num.to_s if num < b
+  digits = ('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
+
+  base_converter(num / b, b).concat(digits[num % b])
 end
 
 
@@ -27,7 +27,7 @@ end
 #______________________________________________________________________
 
 # # # specs # # #
-# ~ * ~  spec.rb:15  spec.rb:19  spec.rb:23  spec.rb:27  spec.rb:31   ~ * ~ #
+# ~ * ~ be rspec spec.rb:15  spec.rb:19  spec.rb:23  spec.rb:27  spec.rb:31   ~ * ~ #
 
 class Array
 
@@ -63,6 +63,9 @@ end
 # Problem 3: Caesar Cipher
 #______________________________________________________________________
 
+# # # specs # # #
+# ~ * ~ be rspec spec.rb:46  spec.rb:50  spec.rb:54   ~ * ~ #
+
 
 # Back in the good old days, you used to be able to write a darn near
 # uncrackable code by simply taking each letter of a message and incrementing it
@@ -75,23 +78,43 @@ end
 # the position of a letter in the array, you may use `Array#find_index`.
 
 def caesar_cipher(str, shift)
+  alpha = ('a'..'z').to_a
+  result = str.chars.map do |ch|
+    index = alpha.index(ch.downcase)
 
+    if index.nil?
+      ch
+    else
+      new_index = index + shift
+      alpha[new_index % alpha.length]
+    end
+  end
+  result.join('')
 end
-
-
-
 
 
 #______________________________________________________________________
 # Problem 4: Deep Dup
 #______________________________________________________________________
 
+# # # specs # # #
+# ~ * ~ be rspec spec.rb:67 spec.rb:71 ~ * ~ #
+
+
+
+
+
+
 
 # Using recursion and the is_a? method,
 # write an Array#deep_dup method that will perform a "deep" duplication of the interior arrays.
 
 def deep_dup(arr)
-
+  result = arr.dup
+  result.map! do |el|
+    el.is_a?(Array) ? deep_dup(el) : el
+  end
+  result
 end
 
 
@@ -101,6 +124,9 @@ end
 #______________________________________________________________________
 # Problem 5: Digital Root
 #______________________________________________________________________
+
+# # # specs # # #
+# ~ * ~ be rspec spec.rb:78 spec.rb:82 ~ * ~ #
 
 
 # Write a method, `digital_root(num)`. It should Sum the digits of a positive
@@ -123,6 +149,8 @@ end
 # Problem 6: Doubler
 #______________________________________________________________________
 
+# # # specs # # #
+# ~ * ~ be rspec spec.rb:95 ~ * ~ #
 
 # Write a method that doubles each element in an array
 def doubler(array)
@@ -136,6 +164,8 @@ end
 # Problem 7: Dups
 #______________________________________________________________________
 
+# # # specs # # #
+# ~ * ~ be rspec spec.rb:109  spec.rb:113  spec.rb:117  spec.rb:121 ~ * ~ #
 
 class Array
 
@@ -157,6 +187,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # CHALLENGE: Eight queens puzzle precursor
 #
 # Write a recursive method that generates all 8! possible unique ways to
@@ -181,6 +216,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # return b^n recursively. Your solution should accept negative values
 # for n
 def exponent(b, n)
@@ -196,6 +236,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # Write a recursive method that returns the first "num" factorial numbers.
 # Note that the 1st factorial number is 0!, which equals 1. The 2nd factorial
 # is 1!, the 3rd factorial is 2!, etc.
@@ -212,6 +257,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # Write a method that returns the factors of a number in ascending order.
 
 def factors(num)
@@ -227,6 +277,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # Implement a method that finds the sum of the first n
 # fibonacci numbers recursively. Assume n > 0
 def fibs_sum(n)
@@ -242,6 +297,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # return the sum of the first n even numbers recursively. Assume n > 0
 def first_even_numbers_sum(n)
 
@@ -256,6 +316,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # Jumble sort takes a string and an alphabet. It returns a copy of the string
 # with the letters re-ordered according to their positions in the alphabet. If
 # no alphabet is passed in, it defaults to normal alphabetical order (a-z).
@@ -277,6 +342,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # make better change problem from class
 # make_better_change(24, [10,7,1]) should return [10,7,7]
 # make change with the fewest number of coins
@@ -301,6 +371,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # Write a method that returns the median of elements in an array
 # If the length is even, return the average of the middle two elements
 class Array
@@ -317,6 +392,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   # Write an Array#merge_sort method; it should not modify the original array.
@@ -338,6 +418,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   def my_all?(&prc)
@@ -355,6 +440,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   def my_any?(&prc)
@@ -372,6 +462,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   def my_each(&prc)
@@ -393,6 +488,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Hash
 
   # Write a version of my each that calls a proc on each key, value pair
@@ -411,6 +511,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   # Takes a multi-dimentional array and returns a single array of all the elements
@@ -439,6 +544,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   # Monkey patch the Array class and add a my_inject method. If my_inject receives
@@ -457,6 +567,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   def my_join(str = "")
@@ -474,6 +589,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Hash
 
   # Write a version of merge. This should NOT modify the original hash
@@ -492,6 +612,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   def my_reject(&prc)
@@ -509,6 +634,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   def my_reverse
@@ -526,6 +656,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   def my_rotate(num)
@@ -543,6 +678,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   def my_select(&prc)
@@ -560,6 +700,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   def my_zip(*arrs)
@@ -577,6 +722,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # Write a recursive function that returns the prime factorization of
 # a given number. Assume num > 1
 #
@@ -598,6 +748,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # primes(num) returns an array of the first "num" primes.
 # You may wish to use an is_prime? helper method.
 
@@ -616,6 +771,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
 
   #Write a monkey patch of quick sort that accepts a block
@@ -634,6 +794,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class String
   # Returns an array of all the subwords of the string that appear in the
   # dictionary argument. The method does NOT return any duplicates.
@@ -652,6 +817,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # Write a recursive method that takes in a string to search and a key string.
 # Return true if the string contains all of the characters in the key
 # in the same order that they appear in the key.
@@ -671,6 +841,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 #returns all subsets of an array
 def subsets(array)
 
@@ -685,6 +860,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class String
 
   # Write a String#symmetric_substrings method that returns an array of substrings
@@ -704,6 +884,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
   # Write a method, `Array#two_sum`, that finds all pairs of positions where the
   # elements at those positions sum to zero.
@@ -728,6 +913,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # Write a recursive method that returns the sum of all elements in an array
 def rec_sum(nums)
 end
@@ -741,6 +931,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # Write a recursive method that returns all of the permutations of an array
 def permutations(array)
 end
@@ -754,6 +949,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 class Array
   def bubble_sort!(&prc)
   end
@@ -771,6 +971,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # Write a method that translates a sentence into pig latin. You may want a helper method.
 # 'apple' => 'appleay'
 # 'pearl' => 'earlpay'
@@ -787,6 +992,11 @@ end
 #______________________________________________________________________
 
 
+# # # specs # # #
+# ~ * ~ be rspec
+
+
+# ~ * ~ #
 # Write a method that capitalizes each word in a string like a book title
 # Do not capitalize words like 'a', 'and', 'of', 'over' or 'the'
 def titleize(title)
