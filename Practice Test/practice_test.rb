@@ -288,8 +288,20 @@ end
 # Write a method that returns the factors of a number in ascending order.
 
 def factors(num)
+ factors = []
+ pairs = []
 
+ 1.upto(Math.sqrt(num).ceil) do |n|
+   if num % n == 0
+     factors << n
+     pair = num / n
+     pairs.unshift(pair) unless n == pair
+   end
+ end
+
+ factors + pairs
 end
+
 
 
 
@@ -299,42 +311,39 @@ end
 # Problem 12: Fibs Sum
 #______________________________________________________________________
 
-
 # # # specs # # #
 # ~ * ~ be rspec spec.rb:190 spec.rb:194 spec.rb:198
-
-
 
 
 # ~ * ~ #
 # Implement a method that finds the sum of the first n
 # fibonacci numbers recursively. Assume n > 0
+
 def fibs_sum(n)
   fibonacci(n).reduce(:+)
 end
 
-# def fibonacci(n)
-#   return [0, 1].take(num) if num <= 2
-#
-#   factorial = factorials_rec(num - 1)
-#   factorial << factorial[-2..-1].reduce(:+)
-# end
-#
-
 def fibonacci(n)
   return [1, 1].take(n) if n <= 2
 
-  fibonacci(n - 1) << fib(n)
+  fib = fibonacci(n - 1)
+  fib << fib[-2..-1].reduce(:+)
 end
 
-def fib(n)
-  ((1 + Math.sqrt(5)) ** n - (1 - Math.sqrt(5)) ** n) / (2 ** n * Math.sqrt(5))
-end
+#
+# def fibonacci(n)
+#   return [1, 1].take(n) if n <= 2
+#
+#   fibonacci(n - 1) << fib(n)
+# end
+#
+# def fib(n)
+#   ((1 + Math.sqrt(5)) ** n - (1 - Math.sqrt(5)) ** n) / (2 ** n * Math.sqrt(5))
+# end
 
 #______________________________________________________________________
 # Problem 13: First Even Numbers Sum
 #______________________________________________________________________
-
 
 # # # specs # # #
 # ~ * ~ be rspec spec.rb:206 spec.rb:210
@@ -342,12 +351,12 @@ end
 
 # ~ * ~ #
 # return the sum of the first n even numbers recursively. Assume n > 0
+
 def first_even_numbers_sum(n)
+  return 0 if n == 0
 
+  2 * n + first_even_numbers_sum(n - 1)
 end
-
-
-
 
 
 #______________________________________________________________________
@@ -368,12 +377,23 @@ end
 # jumble_sort("hello") => "ehllo"
 # jumble_sort("hello", ['o', 'l', 'h', 'e']) => 'ollhe'
 
-def jumble_sort(str, alphabet = nil)
-
+def jumble_sort(str, alphabet = ('a'..'z').to_a)
+  str.chars.sort_by { |ch| alphabet.index(ch.downcase) }.join("")
 end
 
 
-
+#
+# def jumble_sort(str, alphabet = [])
+#   alphabet.concat(('a'..'z').to_a)
+#   counter = Hash.new { |h, k| h[k] = [] }
+#   result = []
+#
+#   str.chars.each { |ch| counter[alphabet.index(ch)] << ch }
+#
+#   counter.keys.sort.each { |k| result += counter[k] }
+#
+#   result.join("")
+# end
 
 
 #______________________________________________________________________
@@ -383,7 +403,6 @@ end
 
 # # # specs # # #
 # ~ * ~ be rspec spec.rb:237 spec.rb:241 spec.rb:245
-
 
 # ~ * ~ #
 # make better change problem from class
@@ -398,7 +417,23 @@ end
 # of each denomination.
 
 def make_better_change(value, coins)
+  valid_coins = coins.sort.reverse.select { |coin| coin <= value }
+  return nil if valid_coins.empty?
 
+  solutions = []
+
+  valid_coins.each do |coin|
+    remainder = value - coin
+
+    if remainder > 0
+      remainder_solution = make_better_change(remainder, valid_coins)
+      solutions << [coin] + remainder_solution unless remainder_solution.nil?
+    else
+      solutions << [coin]
+    end
+  end
+
+  solutions.sort_by(&:length).first
 end
 
 
@@ -416,8 +451,13 @@ end
 # ~ * ~ #
 # Write a method that returns the median of elements in an array
 # If the length is even, return the average of the middle two elements
+
 class Array
   def median
+    mid = (length / 2.0) - 0.5
+    mid_f, mid_c = mid.floor, mid.ceil
+
+    (sort[mid_f] + sort[mid_c]) / 2.0
   end
 end
 
@@ -440,11 +480,15 @@ class Array
   # Write an Array#merge_sort method; it should not modify the original array.
 
   def merge_sort(&prc)
+
   end
 
   private
+
   def self.merge(left, right, &prc)
+
   end
+
 end
 
 
@@ -457,14 +501,14 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
-
+# ~ * ~ be rspec spec.rb:309 spec.rb:313
 
 # ~ * ~ #
 class Array
 
   def my_all?(&prc)
-
+    my_each { |el| return false unless prc.call(el) }
+    true
   end
 
 end
@@ -479,14 +523,14 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
-
+# ~ * ~ be rspec spec.rb:320 spec.rb:324
 
 # ~ * ~ #
 class Array
 
   def my_any?(&prc)
-
+    my_each { |el| return true if prc.call(el) }
+    false
   end
 
 end
@@ -501,18 +545,20 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:333 spec.rb:342
 
 
 # ~ * ~ #
 class Array
 
   def my_each(&prc)
-
+    0.upto(length - 1) do |i|
+      prc.call(self[i])
+    end
   end
 
   def my_each_with_index(&prc)
-
+    0.upto(length - 1) { |i| prc.call(self[i], i) }
   end
 
 end
@@ -527,7 +573,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:352
 
 
 # ~ * ~ #
@@ -535,7 +581,7 @@ class Hash
 
   # Write a version of my each that calls a proc on each key, value pair
   def my_each(&prc)
-
+    keys.my_each { |key| prc.call(key, self[key])}
   end
 
 end
@@ -550,7 +596,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:358 spec.rb:364
 
 
 # ~ * ~ #
@@ -583,7 +629,8 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:371 spec.rb:377 spec.rb:383 spec.rb:396 spec.rb:401
+
 
 
 # ~ * ~ #
@@ -592,7 +639,13 @@ class Array
   # Monkey patch the Array class and add a my_inject method. If my_inject receives
   # no argument, then use the first element of the array as the default accumulator.
 
-  def my_inject(accumulator = nil)
+  def my_inject(acc = nil, &prc)
+    copy = dup
+    acc ||= copy.shift
+
+    copy.my_each { |el| acc = prc.call(acc, el) }
+
+    acc
   end
 end
 
@@ -606,14 +659,14 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:410 spec.rb:414
 
 
 # ~ * ~ #
 class Array
 
   def my_join(str = "")
-
+    my_inject { |acc, ch| acc + ch.to_s }
   end
 
 end
@@ -628,7 +681,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:424 spec.rb:428
 
 
 # ~ * ~ #
@@ -651,14 +704,15 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:437 spec.rb:441
 
 
 # ~ * ~ #
 class Array
 
   def my_reject(&prc)
-
+    result = []
+    my_each { |el| result << el unless prc.call(el) }
   end
 
 end
@@ -673,14 +727,19 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:450
+
 
 
 # ~ * ~ #
 class Array
 
   def my_reverse
+    result = []
 
+    my_each { |el| result.unshift(el) }
+
+    result
   end
 
 end
@@ -695,8 +754,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
-
+# ~ * ~ be rspec spec.rb:458 spec.rb:462 spec.rb:466 spec.rb:470
 
 # ~ * ~ #
 class Array
@@ -717,14 +775,19 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:480 spec.rb:484
+
 
 
 # ~ * ~ #
 class Array
 
   def my_select(&prc)
+    result = []
 
+    my_each { |el| result << el if prc.call(el) }
+
+    result
   end
 
 end
@@ -739,14 +802,21 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:494 spec.rb:498 spec.rb:505
 
 
 # ~ * ~ #
 class Array
 
   def my_zip(*arrs)
+    zipped = []
 
+    0.upto(length - 1) do |i|
+      new_term = [self[i]]
+      arrs.each { |arr| new_term << arr[i] }
+    end
+
+    zipped
   end
 
 end
@@ -770,11 +840,22 @@ end
 #
 # prime_factorization(12) => [2,2,3]
 def prime_factorization(num)
+  return [] if num == 1
+  return [num] if is_prime?(num)
 
+  factor = 1
+  pair = nil
+
+  until pair
+    factor[0] += 1
+    pair = num / factor[0] if num % factor[0] == 0
+  end
+
+  prime_factorization(factor) + prime_factorization(pair)
 end
 
 def is_prime?(num)
-
+  factors(num).length == 2
 end
 
 
@@ -794,10 +875,13 @@ end
 # primes(num) returns an array of the first "num" primes.
 # You may wish to use an is_prime? helper method.
 
-def is_prime?(num)
-end
-
 def primes(num)
+  primes = []
+  current_num
+
+  until primes.length == num
+    primes << current_num if is_prime?(current_num)
+  end
 end
 
 
@@ -856,7 +940,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:573 spec.rb:577 spec.rb:581 spec.rb:585 spec.rb:589
 
 
 # ~ * ~ #
@@ -880,7 +964,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:597
 
 
 # ~ * ~ #
@@ -899,7 +983,8 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:605 spec.rb:609 spec.rb:613
+
 
 
 # ~ * ~ #
@@ -910,6 +995,10 @@ class String
   # Only include substrings of length > 1.
 
   def symmetric_substrings
+  end
+
+  def is_palindrome?
+
   end
 end
 
@@ -923,7 +1012,8 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:619 spec.rb:623 spec.rb:627 spec.rb:631 spec.rb:635 spec.rb:639
+
 
 
 # ~ * ~ #
@@ -938,7 +1028,6 @@ class Array
   #   [0, 1] before [0, 2] (then smaller second elements come first)
 
   def two_sum
-
   end
 end
 
@@ -952,7 +1041,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:645 spec.rb:650
 
 
 # ~ * ~ #
@@ -970,7 +1059,8 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:656
+
 
 
 # ~ * ~ #
@@ -988,16 +1078,34 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:664 spec.rb:668 spec.rb:672 spec.rb:676 spec.rb:682 spec.rb:695
+
 
 
 # ~ * ~ #
 class Array
   def bubble_sort!(&prc)
+    return self if self.length < 2
+
+    prc ||= Proc.new { |a, b| a <=> b }
+    sorted = false
+
+    until sorted
+      sorted = true
+      0.upto(length - 2) do |i|
+        next if prc.call(self[i], self[i + 1]) < 1
+        self[i], self[i + 1] = self[i + 1], self[i]
+        sorted = false
+      end
+    end
+    self
   end
 
   def bubble_sort(&prc)
+    copy = dup
+    copy.bubble_sort!(&prc)
   end
+
 end
 
 
@@ -1010,7 +1118,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:709 spec.rb:714 spec.rb:719 spec.rb:724 spec.rb:729 spec.rb:733 spec.rb:738 spec.rb:743 spec.rb:748
 
 
 # ~ * ~ #
@@ -1019,8 +1127,25 @@ end
 # 'pearl' => 'earlpay'
 # 'quick' => 'ickquay'
 def pig_latinify(sentence)
+  words = sentence.split
+  words.map! { |word| piggify(word) }.join(" ")
 end
 
+def piggify(word)
+  result = word.chars
+
+  while is_consonant?(result[0])
+    result.push(result.shift) if result[0] == 'q'
+    result.push(result.shift)
+  end
+
+  result.join + "ay"
+end
+
+def is_consonant?(ch)
+  vowels = %w(a e i o u)
+  !vowels.include?(ch)
+end
 
 
 
@@ -1031,11 +1156,33 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
-
+# ~ * ~ be rspec spec.rb:755 spec.rb:759 spec.rb:763 spec.rb:767
 
 # ~ * ~ #
 # Write a method that capitalizes each word in a string like a book title
 # Do not capitalize words like 'a', 'and', 'of', 'over' or 'the'
 def titleize(title)
+  downcase_hash = not_to_capitalize
+
+  result = title.split.map.with_index do |word, i|
+    word = word.downcase
+    word[0] = word[0].upcase unless i != 0 && downcase_hash[word]
+    word
+  end
+
+  result.join(" ")
+end
+
+
+def not_to_capitalize
+  downcase_hash = {}
+
+  prepositions = %w(off for on from onto in out up but over upon by
+                    past of with at down like near of to with to into)
+  conjuctions = %w(and but or yet for nor so)
+  articles = %w(a an the)
+
+  downcase_array = prepositions + articles + conjuctions
+  downcase_array.each { |word| downcase_hash[word] = 1}
+  downcase_hash
 end
