@@ -951,7 +951,11 @@ end
 # string_include_key?("cadbpc", "abc") => true
 # string_include_key("cba", "abc") => false
 def string_include_key?(string, key)
-
+  return true if key.empty?
+  current_key, keys_left = key[0], key[1..-1]
+  index = string.index(current_key)
+  return false unless index
+  string_include_key?(string[index + 1..-1], keys_left)
 end
 
 
@@ -969,8 +973,11 @@ end
 
 # ~ * ~ #
 #returns all subsets of an array
-def subsets(array)
+def subsets(arr)
+  return [[]] if arr.empty?
 
+  subs = subsets(arr[0...-1])
+  subs.concat(subs.map { |e| e + [arr[-1]] })
 end
 
 
@@ -995,10 +1002,18 @@ class String
   # Only include substrings of length > 1.
 
   def symmetric_substrings
+    subs = []
+    0.upto(length - 2) do |i|
+      1.upto(length - 1) do |j|
+        next if j <= i
+        subs << self[i..j] if self[i..j].is_palindrome?
+      end
+    end
+    subs
   end
 
   def is_palindrome?
-
+    self == reverse
   end
 end
 
@@ -1027,8 +1042,53 @@ class Array
   #   [0, 2] before [1, 2] (smaller first elements come first)
   #   [0, 1] before [0, 2] (then smaller second elements come first)
 
-  def two_sum
+  def two_sum(target = 0)
+    # 3.2 seconds
+    hash = {}
+    result = []
+
+    each_with_index do |el, i| # always: 0(n)
+      hash[el] ? hash[el] << i : hash[el] = [i]
+    end
+
+
+    hash.keys.each do |k| # worst case: 0(n)
+
+      if k == 0
+        result += hash[k].combination(2).to_a
+        next
+      end
+
+      pair = target - k
+
+      if hash[pair]
+
+        hash[k].each do |i|
+          hash[pair].each { |j| result << [i, j] unless i == j}
+        end
+        hash.delete(k)
+      end
+
+    end
+
+    result
   end
+
+  # def two_sum(target = 0)
+  #   # => 3.68 seconds
+  #   result = []
+  #
+  #   each_with_index do |el1, i|
+  #     each_with_index do |el2, j|
+  #       next if i >= j
+  #       result << [i, j] if el1 + el2 == target
+  #     end
+  #   end
+  #
+  #   result
+  # end
+
+
 end
 
 
@@ -1046,7 +1106,11 @@ end
 
 # ~ * ~ #
 # Write a recursive method that returns the sum of all elements in an array
-def rec_sum(nums)
+def rec_sum(arr)
+  return 0 if arr.empty?
+  return arr[0] if arr.length == 1
+
+  arr[-1] + rec_sum(arr[0...-1])
 end
 
 
@@ -1066,6 +1130,19 @@ end
 # ~ * ~ #
 # Write a recursive method that returns all of the permutations of an array
 def permutations(array)
+  return [array] unless array.length > 1
+
+  result = []
+  el, perms = array[-1], permutations(array[0...-1])
+
+  perms.each do |perm|
+    0.upto(perm.length) do |i|
+      iteration = perm.dup
+      result << iteration.insert(i, el)
+    end
+  end
+
+  result
 end
 
 
@@ -1085,8 +1162,6 @@ end
 # ~ * ~ #
 class Array
   def bubble_sort!(&prc)
-    return self if self.length < 2
-
     prc ||= Proc.new { |a, b| a <=> b }
     sorted = false
 
@@ -1102,8 +1177,7 @@ class Array
   end
 
   def bubble_sort(&prc)
-    copy = dup
-    copy.bubble_sort!(&prc)
+    dup.bubble_sort!(&prc)
   end
 
 end
