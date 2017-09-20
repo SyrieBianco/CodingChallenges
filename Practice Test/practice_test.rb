@@ -454,6 +454,7 @@ end
 
 class Array
   def median
+    return nil if empty?
     mid = (length / 2.0) - 0.5
     mid_f, mid_c = mid.floor, mid.ceil
 
@@ -480,13 +481,30 @@ class Array
   # Write an Array#merge_sort method; it should not modify the original array.
 
   def merge_sort(&prc)
+    return self if length < 2
+    prc ||= Proc.new { |a, b| a <=> b }
+    mid_i = length / 2
+    left, right = take(mid_i), drop(mid_i)
 
+    sorted_left, sorted_right = left.merge_sort(&prc), right.merge_sort(&prc)
+
+    Array.merge(sorted_left, sorted_right, &prc)
   end
 
   private
 
   def self.merge(left, right, &prc)
+    merged = []
 
+    until left.empty? || right.empty?
+      if prc.call(left[0], right[0]) < 1
+        merged << left.shift
+      else
+        merged << right.shift
+      end
+    end
+
+    merged + left + right
   end
 
 end
@@ -831,7 +849,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:512 spec.rb:516 spec.rb:520
 
 
 # ~ * ~ #
@@ -868,7 +886,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:528 spec.rb:532
 
 
 # ~ * ~ #
@@ -894,8 +912,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
-
+# ~ * ~ be rspec spec.rb:541 spec.rb:545 spec.rb:549
 
 # ~ * ~ #
 class Array
@@ -917,7 +934,7 @@ end
 
 
 # # # specs # # #
-# ~ * ~ be rspec
+# ~ * ~ be rspec spec.rb:555 spec.rb:560 spec.rb:565
 
 
 # ~ * ~ #
@@ -926,7 +943,7 @@ class String
   # dictionary argument. The method does NOT return any duplicates.
 
   def real_words_in_string(dictionary)
-
+    substrings.select { |str| dictionary.include?(str) }
   end
 end
 
@@ -1002,14 +1019,18 @@ class String
   # Only include substrings of length > 1.
 
   def symmetric_substrings
+    substrings.select { |e| e.is_palindrome?  && e.length > 2 }
+  end
+
+  def substrings
     subs = []
     0.upto(length - 2) do |i|
       1.upto(length - 1) do |j|
-        next if j <= i
-        subs << self[i..j] if self[i..j].is_palindrome?
+        next if j < i
+        subs << self[i..j]
       end
     end
-    subs
+    subs.uniq
   end
 
   def is_palindrome?
@@ -1043,54 +1064,52 @@ class Array
   #   [0, 1] before [0, 2] (then smaller second elements come first)
 
   def two_sum(target = 0)
-    # 3.2 seconds
-    hash = {}
-    result = []
+    # 0.00971 seconds
+    results = []
 
-    each_with_index do |el, i| # always: 0(n)
-      hash[el] ? hash[el] << i : hash[el] = [i]
+    each_with_index do |el1, i|
+      each_with_index do |el2, j|
+        next if i >= j
+        results << [i, j] if el1 + el2 == target
+      end
     end
 
-
-    hash.keys.each do |k| # worst case: 0(n)
-
-      if k == 0
-        result += hash[k].combination(2).to_a
-        next
-      end
-
-      pair = target - k
-
-      if hash[pair]
-
-        hash[k].each do |i|
-          hash[pair].each { |j| result << [i, j] unless i == j}
-        end
-        hash.delete(k)
-      end
-
-    end
-
-    result
+    results
   end
 
-  # def two_sum(target = 0)
-  #   # => 3.68 seconds
-  #   result = []
-  #
-  #   each_with_index do |el1, i|
-  #     each_with_index do |el2, j|
-  #       next if i >= j
-  #       result << [i, j] if el1 + el2 == target
-  #     end
-  #   end
-  #
-  #   result
-  # end
-
-
+#   def two_sum(target = 0)
+#     #  0.00239 seconds
+#     hash = {}
+#
+#     each_with_index do |el, i|
+#       hash[el] ? hash[el] << i : hash[el] = [i]
+#     end
+#
+#     results = []
+#
+#     hash.each do |k, v|
+#       pair = target - k
+#
+#       if k == 0
+#         results += hash[k].combination(2).to_a
+#         next
+#       end
+#
+#       if hash[pair]
+#         hash[k].each do |i|
+#           hash[pair].each { |j| results << [i, j] unless i == j}
+#         end
+#         hash.delete(k)
+#       end
+#     end
+#
+#     results
+#   end
+#
+#
 end
 
+# [1, 2, 5, 7, -2, 4, 6, -1, -1] => [0, 7], [0, 8], [1, 4]
 
 
 
