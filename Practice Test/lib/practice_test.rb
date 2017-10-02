@@ -15,7 +15,7 @@ def base_converter(num, b)
   return num.to_s if num < b
   digits = ('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
 
-  base_converter(num / b, b).concat(digits[num % b])
+  base_converter(num / b, b) + digits[num % b]
 end
 
 
@@ -34,25 +34,20 @@ class Array
   # Write a monkey patch of binary search:
   # E.g. [1, 2, 3, 4, 5, 7].my_bsearch(5) => 4
   def my_bsearch(target, &prc)
-    return nil if length < 1
-    prc ||= Proc.new{ |a, b| a <=> b }
-
+    prc ||= Proc.new { |a, b| a <=> b }
     mid_i = length / 2
-    mid = self[mid_i]
-    left, right = take(mid_i), drop(mid_i + 1)
 
-    case prc.call(target, mid)
+    case prc.call(target, self[mid_i])
     when 0
       return mid_i
     when -1
-      result = left.my_bsearch(target, &prc)
-      result ? result : nil
+      return self[0...mid_i].my_bsearch(target, &prc)
     when 1
-      result = right.my_bsearch(target, &prc)
-      result ? result + mid_i + 1 : nil
+      result = self[mid_i + 1..-1].my_bsearch(target, &prc)
+      return result ? result + mid_i + 1 : nil
     end
+    nil
   end
-
 end
 
 
@@ -79,17 +74,14 @@ end
 
 def caesar_cipher(str, shift)
   alpha = ('a'..'z').to_a
-  result = str.chars.map do |ch|
+  result = ''
+  str.chars.each do |ch|
     index = alpha.index(ch.downcase)
-
-    if index.nil?
-      ch
-    else
-      new_index = index + shift
-      alpha[new_index % alpha.length]
-    end
+    new_ch = index ? alpha[(index + shift) % alpha.length] : ch
+    result << new_ch
   end
-  result.join('')
+
+  result
 end
 
 
@@ -417,25 +409,37 @@ end
 # of each denomination.
 
 def make_better_change(value, coins)
-  valid_coins = coins.sort.reverse.select { |coin| coin <= value }
-  return nil if valid_coins.empty?
-
-  solutions = []
-
-  valid_coins.each do |coin|
-    remainder = value - coin
-
-    if remainder > 0
-      remainder_solution = make_better_change(remainder, valid_coins)
-      solutions << [coin] + remainder_solution unless remainder_solution.nil?
-    else
-      solutions << [coin]
-    end
-  end
-
-  solutions.sort_by(&:length).first
 end
 
+
+
+
+
+
+
+
+
+
+
+
+
+# valid_coins = coins.sort.reverse.select { |coin| coin <= value }
+# return nil if valid_coins.empty?
+#
+# solutions = []
+#
+# valid_coins.each do |coin|
+#   remainder = value - coin
+#
+#   if remainder > 0
+#     remainder_solution = make_better_change(remainder, valid_coins)
+#     solutions << [coin] + remainder_solution unless remainder_solution.nil?
+#   else
+#     solutions << [coin]
+#   end
+# end
+#
+# solutions.sort_by(&:length).first
 
 
 
@@ -628,6 +632,7 @@ class Array
         el.my_flatten
       else
         el
+      end
     end
   end
 
