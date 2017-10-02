@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative 'practice_test'
+require_relative '../lib/practice_test'
 describe "#base_converter" do
   it "converts a small number in binary" do
     expect(base_converter(5, 2)).to eq("101")
@@ -768,4 +768,3 @@ describe "titleize" do
     expect(titleize("the bridge over the river kwai")).to eq("The Bridge over the River Kwai")
   end
 end
-

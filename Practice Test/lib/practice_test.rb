@@ -291,7 +291,7 @@ def factors(num)
  factors = []
  pairs = []
 
- 1.upto(Math.sqrt(num).ceil) do |n|
+ 1.upto(Math.sqrt(num).floor) do |n|
    if num % n == 0
      factors << n
      pair = num / n
@@ -623,7 +623,12 @@ class Array
   # Takes a multi-dimentional array and returns a single array of all the elements
   # [1,[2,3], [4,[5]]].my_controlled_flatten(1) => [1,2,3,4,5]
   def my_flatten
-
+    map do |el|
+      if el.is_a?(Array)
+        el.my_flatten
+      else
+        el
+    end
   end
 
   # Write a version of flatten that only flattens n levels of an array.
@@ -684,7 +689,7 @@ end
 class Array
 
   def my_join(str = "")
-    my_inject { |acc, ch| acc + ch.to_s }
+    my_inject { |acc, ch| acc + str + ch.to_s }
   end
 
 end
@@ -707,7 +712,11 @@ class Hash
 
   # Write a version of merge. This should NOT modify the original hash
   def my_merge(hash2)
-
+    result = hash2.dup
+    each do |k, v|
+      result[k] = v unless result[k]
+    end
+    result
   end
 
 end
@@ -731,6 +740,7 @@ class Array
   def my_reject(&prc)
     result = []
     my_each { |el| result << el unless prc.call(el) }
+    result
   end
 
 end
@@ -777,8 +787,10 @@ end
 # ~ * ~ #
 class Array
 
-  def my_rotate(num)
-
+  def my_rotate(num = 1)
+    res = dup
+    num > 0 ? num.times { res.push(res.shift) } : num.abs.times { res.unshift(res.pop) }
+    res
   end
 
 end
@@ -831,7 +843,10 @@ class Array
 
     0.upto(length - 1) do |i|
       new_term = [self[i]]
-      arrs.each { |arr| new_term << arr[i] }
+      arrs.each do |arr|
+        new_term << arr[i]
+      end
+      zipped << new_term
     end
 
     zipped
@@ -861,15 +876,10 @@ def prime_factorization(num)
   return [] if num == 1
   return [num] if is_prime?(num)
 
-  factor = 1
-  pair = nil
-
-  until pair
-    factor[0] += 1
-    pair = num / factor[0] if num % factor[0] == 0
+  2.upto(Math.sqrt(num).ceil) do |i|
+    return [i] + prime_factorization(num / i) if num % i == 0
   end
 
-  prime_factorization(factor) + prime_factorization(pair)
 end
 
 def is_prime?(num)
@@ -895,11 +905,14 @@ end
 
 def primes(num)
   primes = []
-  current_num
+  current_num = 0
 
   until primes.length == num
     primes << current_num if is_prime?(current_num)
+    current_num += 1
   end
+
+  primes
 end
 
 
@@ -919,7 +932,17 @@ class Array
 
   #Write a monkey patch of quick sort that accepts a block
   def my_quick_sort(&prc)
+    return self if length < 2
+    prc ||= Proc.new { |a, b| a <=> b }
 
+    pvt, remainder = self[0], self[1..-1]
+    left, right = [], []
+
+    remainder.each { |el| prc.call(el, pvt) < 1 ? left << el : right << el }
+
+    sorted_l, sorted_r = left.my_quick_sort(&prc), right.my_quick_sort(&prc)
+
+    sorted_l + [pvt] + sorted_r
   end
 
 end
