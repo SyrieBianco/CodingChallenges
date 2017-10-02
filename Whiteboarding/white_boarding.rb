@@ -6,25 +6,15 @@
 #   reversed == string
 # end
 
-def is_palindrome?(str)
-  i = 0
-  until i == str.length / 2
-    return false if str[i] != str[(str.length - 1) - i]
-    i += 1
-  end
-  true
-end
 
 
-
-
-def longest_palindrome(str)
+def longest_palindrome(s)
   #instantiate an empty string to hold the longest palindrome
   longest = ""
   #instantiate an index tracker
   i = 0
 
-  until i == str.length
+  until i == s.length
     # make variables to hold:
     # 1) the current palindrome,
     # 2) the left and right indexes of the current palindrome
@@ -32,30 +22,30 @@ def longest_palindrome(str)
     l, r = i, i + 1
 
     # check to see if your current left index starts a palindrome...
-    if str[l] == str[r]
+    if s[l] == s[r]
       # if you have two of the same letter in a row
       # increment l and r until they are no longer equal to the element
       # at the current index (to account for any number of the same characters in a row)
-      until str[l - 1] != str[i]
+      until s[l - 1] != s[i]
         l -= 1
       end
-      until str[r + 1] != str[i]
+      until s[r + 1] != s[i]
         r += 1
       end
-      current = str[l..r]
-    elsif str[l] == str[r + 1]
+      current = s[l..r]
+    elsif s[l] == s[r + 1]
       # if its a palindrome with one character sandwiched, then
       # increment the right index to account for this extra character
       r += 1
       # set 'current' to this palindrome
-      current = str[l..r]
+      current = s[l..r]
     else
       i += 1
       next
     end
 
-    until str[l] != str[r]
-      current = str[l..r]
+    until s[l] != s[r]
+      current = s[l..r]
       l -= 1
       r += 1
     end
