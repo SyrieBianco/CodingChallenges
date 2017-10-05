@@ -409,6 +409,22 @@ end
 # of each denomination.
 
 def make_better_change(value, coins)
+  valid_coins = coins.select { |coin| coin <= value}
+  return nil if valid_coins.empty?
+
+  solutions = []
+
+  valid_coins.each do |coin|
+    remainder = value - coin
+    if remainder == 0
+      solutions << [coin]
+    else
+      remainder_solution = make_better_change(remainder, valid_coins)
+      solutions << [coin] + remainder_solution if remainder_solution
+    end
+  end
+
+  solutions.sort_by(&:length).first
 end
 
 
