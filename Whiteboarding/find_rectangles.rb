@@ -6,7 +6,7 @@
 
 # Write a function that takes in the image and outputs the coordinates
 # of all the 0 rectangles --
-# op-left and bottom-right;
+# top-left and bottom-right;
 # or top-left, width and height.
 
 
@@ -54,7 +54,7 @@ end
 # input:
 image = [
   # 0  1  2  3  4  5  6
-  [1, 1, 0, 1, 1, 1, 1], # 0
+  [1, 1, 1, 1, 1, 1, 1], # 0
   [1, 1, 1, 1, 1, 1, 1], # 1
   [1, 1, 1, 0, 0, 0, 1], # 2
   [1, 0, 1, 0, 0, 0, 1], # 3
