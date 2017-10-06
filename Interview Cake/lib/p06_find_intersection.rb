@@ -116,35 +116,35 @@ result8 = find_intersection(rect1, rect3)
 expect7 = { 'x' => 8, 'y' => 4, 'w' => 2, 'h' => 1 }
 expect8 = rect3
 
-p ' ~~ test 1 ~~ '
-p " result = #{result1}"
-p "expected: #{expect1}"
-p  result1 == expect1
-p ' ~~ test 2 ~~ '
-p " result = #{result2}"
-p "expected: #{expect2}"
-p  result2 == expect2
-p ' ~~ test 3 ~~ '
-p " result = #{result3}"
-p "expected: #{expect3}"
-p  result3 == expect3
-p ' ~~ test 4 ~~ '
-p " result = #{result4}"
-p "expected: #{expect4}"
-p  result4 == expect4
-p ' ~~ test 5 ~~ '
-p " result = #{result5}"
-p "expected: #{expect5}"
-p  result5 == expect5
-p ' ~~ test 6 ~~ '
-p " result = #{result6}"
-p "expected: #{expect6}"
-p  result6 == expect6
-p ' ~~ test 7 ~~ '
-p " result = #{result7}"
-p "expected: #{expect7}"
-p  result7 == expect7
-p ' ~~ test 8 ~~ '
-p " result = #{result8}"
-p "expected: #{expect8}"
-p  result8 == expect8
+puts ' ~~ test 1 ~~ '
+puts "  result: #{result1}"
+puts "expected: #{expect1}"
+puts  result1 == expect1
+puts ' ~~ test 2 ~~ '
+puts "  result: #{result2}"
+puts "expected: #{expect2}"
+puts  result2 == expect2
+puts ' ~~ test 3 ~~ '
+puts "  result: #{result3}"
+puts "expected: #{expect3}"
+puts  result3 == expect3
+puts ' ~~ test 4 ~~ '
+puts "  result: #{result4}"
+puts "expected: #{expect4}"
+puts  result4 == expect4
+puts ' ~~ test 5 ~~ '
+puts "  result: #{result5}"
+puts "expected: #{expect5}"
+puts  result5 == expect5
+puts ' ~~ test 6 ~~ '
+puts "  result: #{result6}"
+puts "expected: #{expect6}"
+puts  result6 == expect6
+puts ' ~~ test 7 ~~ '
+puts "  result: #{result7}"
+puts "expected: #{expect7}"
+puts  result7 == expect7
+puts ' ~~ test 8 ~~ '
+puts "  result: #{result8}"
+puts "expected: #{expect8}"
+puts  result8 == expect8
