@@ -1,25 +1,28 @@
 def make_change(amount, coins)
-  valid_coins = coins.select { |coin| coin <= amount }
-  return [] if valid_coins.empty?
+  cache = Hash.new { |cache, amount| cache[amount] = [] }
+  cache_builder(amount, coins, cache)[amount]
+end
 
+
+
+def cache_builder(amount, coins, cache)
+  valid_coins = coins.select { |coin| coin <= amount }
 
   valid_coins.each do |coin|
     remainder = amount - coin
 
     if remainder.zero?
-      solutions << [coin]
+      cache[amount] << [coin]
     else
-      solutions << [coin] + make_change(remainder, valid_coins)
+      results = cache_builder(remainder, valid_coins, cache)[remainder]
+      results.each do |result|
+        new_combo = ([coin] + result).sort
+        cache[amount] << new_combo unless cache[amount].include?(new_combo)
+      end
     end
   end
 
-  solutions.sort_by(&:length).first
-end
-
-
-
-def change_cache_builder(amount, coins, solutions = {})
-
+  cache
 end
 
 
@@ -40,7 +43,7 @@ result4 = make_change(amount2, denoms2).sort
 expect1 = [[1, 1, 1, 1]].sort
 expect2 = [[1, 10], [1, 5, 5], [1, 1, 1, 1, 1, 1, 5],
            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]].sort
-expect3 = [[1, 1, 1, 1], [1, 1, 2], [1, 3]].sort
+expect3 = [[1, 1, 1, 1], [1, 1, 2], [1, 3], [2, 2]].sort
 expect4 = [].sort
 
 p ' ~~ test 1 ~~ '
