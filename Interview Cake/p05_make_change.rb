@@ -2,7 +2,6 @@ def make_change(amount, coins)
   valid_coins = coins.select { |coin| coin <= amount }
   return [] if valid_coins.empty?
 
-  solutions = []
 
   valid_coins.each do |coin|
     remainder = amount - coin
@@ -19,7 +18,9 @@ end
 
 
 
+def change_cache_builder(amount, coins, solutions = {})
 
+end
 
 
 
