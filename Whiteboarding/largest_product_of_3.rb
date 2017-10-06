@@ -17,8 +17,7 @@ def largest_product_of_3(arr)
       smallest_2[1] = el
     end
   end
-  p largest_3
-  p smallest_2
+  
   [largest_3.reduce(:*), largest_3[0] * smallest_2.reduce(:*)].max
 end
 
