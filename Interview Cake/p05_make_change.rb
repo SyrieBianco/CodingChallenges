@@ -30,6 +30,7 @@ end
 
 denoms1 = [1, 5, 10]
 denoms2 = [1, 2, 3, 5, 10]
+denoms3 = [5, 10, 11]
 
 amount1 = 4
 amount2 = 11
@@ -38,7 +39,7 @@ amount2 = 11
 result1 = make_change(amount1, denoms1).sort
 result2 = make_change(amount2, denoms1).sort
 result3 = make_change(amount1, denoms2).sort
-result4 = make_change(amount2, denoms2).sort
+result4 = make_change(amount1, denoms3).sort
 
 expect1 = [[1, 1, 1, 1]].sort
 expect2 = [[1, 10], [1, 5, 5], [1, 1, 1, 1, 1, 1, 5],
