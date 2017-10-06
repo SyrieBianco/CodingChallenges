@@ -1,5 +1,20 @@
-def make_change(amount, denoms)
+def make_change(amount, coins)
+  valid_coins = coins.select { |coin| coin <= amount }
+  return [] if valid_coins.empty?
 
+  solutions = []
+
+  valid_coins.each do |coin|
+    remainder = amount - coin
+
+    if remainder.zero?
+      solutions << [coin]
+    else
+      solutions << [coin] + make_change(remainder, valid_coins)
+    end
+  end
+
+  solutions.sort_by(&:length).first
 end
 
 
@@ -43,7 +58,3 @@ p ' ~~ test 4 ~~ '
 p " result = #{result4}"
 p "expected: #{expect4}"
 p  result4 == expect4
-p ' ~~ test 5 ~~ '
-p " result : #{result5}"
-p "expected: #{expect5}"
-p  result5 == expect5
