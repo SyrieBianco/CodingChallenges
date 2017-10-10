@@ -53,8 +53,10 @@ rect_b = { 'x' => 2, 'y' => 1, 'w' => 4, 'h' => 2 }
 result1 = find_intersection(rect_a, rect_b)
 result2 = find_intersection(rect_b, rect_a)
 
+
 expect1 = { 'x' => 2, 'y' => 2, 'w' => 2, 'h' => 1 }
 expect2 = expect1
+
 
 # ^
 # 6         .___________________.

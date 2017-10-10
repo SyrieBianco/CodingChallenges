@@ -47,19 +47,19 @@ expect2 = [[1, 10], [1, 5, 5], [1, 1, 1, 1, 1, 1, 5],
 expect3 = [[1, 1, 1, 1], [1, 1, 2], [1, 3], [2, 2]].sort
 expect4 = [].sort
 
-p ' ~~ test 1 ~~ '
-p " result = #{result1}"
-p "expected: #{expect1}"
-p  result1 == expect1
-p ' ~~ test 2 ~~ '
-p " result = #{result2}"
-p "expected: #{expect2}"
-p  result2 == expect2
-p ' ~~ test 3 ~~ '
-p " result = #{result3}"
-p "expected: #{expect3}"
-p  result3 == expect3
-p ' ~~ test 4 ~~ '
-p " result = #{result4}"
-p "expected: #{expect4}"
-p  result4 == expect4
+puts ' ~~ test 1 ~~ '
+puts " result = #{result1}"
+puts "expected: #{expect1}"
+puts  result1 == expect1
+puts ' ~~ test 2 ~~ '
+puts " result = #{result2}"
+puts "expected: #{expect2}"
+puts  result2 == expect2
+puts ' ~~ test 3 ~~ '
+puts " result = #{result3}"
+puts "expected: #{expect3}"
+puts  result3 == expect3
+puts ' ~~ test 4 ~~ '
+puts " result = #{result4}"
+puts "expected: #{expect4}"
+puts  result4 == expect4
