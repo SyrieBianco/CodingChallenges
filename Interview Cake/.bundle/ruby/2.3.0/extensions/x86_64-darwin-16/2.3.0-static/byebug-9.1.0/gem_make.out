@@ -1,0 +1,19 @@
+current directory: /Users/syriebianco/Desktop/Programming/Little Projects/Coding Challenges/Interview Cake/.bundle/ruby/2.3.0/gems/byebug-9.1.0/ext/byebug
+/Users/syriebianco/.rbenv/versions/2.3.1/bin/ruby -r ./siteconf20171013-25458-1x5syck.rb extconf.rb
+creating Makefile
+
+current directory: /Users/syriebianco/Desktop/Programming/Little Projects/Coding Challenges/Interview Cake/.bundle/ruby/2.3.0/gems/byebug-9.1.0/ext/byebug
+make "DESTDIR=" clean
+
+current directory: /Users/syriebianco/Desktop/Programming/Little Projects/Coding Challenges/Interview Cake/.bundle/ruby/2.3.0/gems/byebug-9.1.0/ext/byebug
+make "DESTDIR="
+compiling breakpoint.c
+compiling byebug.c
+compiling context.c
+compiling locker.c
+compiling threads.c
+linking shared-object byebug/byebug.bundle
+
+current directory: /Users/syriebianco/Desktop/Programming/Little Projects/Coding Challenges/Interview Cake/.bundle/ruby/2.3.0/gems/byebug-9.1.0/ext/byebug
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 byebug.bundle ./.gem.20171013-25458-p5jls8/byebug
