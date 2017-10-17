@@ -1,6 +1,32 @@
+
+
+# Your quirky boss collects rare, old coins...
+# They found out you're a programmer and asked you to solve something
+# they've been wondering for a long time.
+
+
+# Write a function that, given:
+#
+# an amount of money
+# a list of coin denominations
+# computes the number of ways to make the amount of money with coins of
+# the available denominations.
+#
+#   Example:
+#     for amount = 44 (44¢) and
+#     denominations = [1,2,3] (1¢, 2¢ and 3¢),
+#     your program would output ~*~ 4 ~*~
+#     the number of ways to make 4¢ with those denominations:
+#
+#       1.   1¢, 1¢, 1¢, 1¢
+#       2.   1¢, 1¢, 2¢
+#       3.   1¢, 3¢
+#       4.   2¢, 2¢
+
+
 def make_change(amount, coins)
   cache = Hash.new { |cache, amount| cache[amount] = [] }
-  cache_builder(amount, coins, cache)[amount]
+  cache_builder(amount, coins, cache)[amount].count
 end
 
 
